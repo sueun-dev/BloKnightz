@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>BloKnightz</title>
+    <script type="text/javascript"></script>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Responsive-->
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- fevicon -->
+    <link rel="icon" href="images/Fevicon.ico" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <script>
+       const pageName = 'NFT'
+    </script>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+       <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+         <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+       </symbol>
+       </svg>
+ </head>
+<body>
+   <header>
+      <!-- header inner -->
+      <div  class="head_top">
+         <div class="header">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                     <div class="full">
+                        <div class="center-desk">
+                           <div class="logo">
+                              <a class="nav-link active" a href="NFT.html"><img src="로고 아직 없음"/></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                     <nav class="navigation navbar navbar-expand-md navbar-dark ">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample04">
+                           <ul class="navbar-nav mr-auto">
+                              <li class="nav-item">
+                                 <a class="nav-link" href="index.html", style="font-size: 25px;"> Main</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link active" href="NFT.html", style="font-size: 25px;">MINT YOUR NFT</a>
+                              </li>
+                           </ul>
+                        </div>
+                     </nav>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- end header inner -->
+         <!-- end header -->
+         <!-- banner -->
+         <div class="container-fluid">
+            <div class="row d_flex">
+               <div class="col-md-6">
+                  <div class="text-bg", style = "position:relative; right: px; top: -50px;">
+                     <h2>1 NFT = 미정 KLAY</h2>
+                     <div><h2><span id="total-supply"></span>/<span id="max-supply"></span></h2></div>
+                     <br/>
+                     <h2>Start Minting</h2>
+                     <div>
+                       <input type="number" id="number-of-tokens" value="1" style="margin-right: 5px; text-align:right; position:relative; left:0px; top: 9px; height: 55px; width: 120px; font-size: 30px;"/>
+                       <button type="button" onclick="buyERC721.mintWithETH()" class="btn btn-success" style="font-size: 30px;">Buy NFT</button>
+                     </div>
+                     <!-- 
+                     <div>
+                        <input type="number" id="number-of-tokens" value="1" style="margin-right: 5px; text-align:right; position:relative; left:0px; top: 9px; height: 55px; width: 120px; font-size: 30px;"/>
+                        <button type="button" onclick="buyERC721.mintWithETH()" class="btn btn-success" style="font-size: 30px;">ETH</button>
+                      </div>-->
+                     <br/>
+                     <div id="Account", style="height: 20px; width: 250px; font-size: 17px;">
+                        <button class="button button4" onclick="App.CheckId()" style="height: 70px; width: 180px;" >Click Here! Check Your MetaMask Address</button>  
+                        </div>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="text-img">
+                     <figure><img src="images/box_img2.png" alt=""/></figure>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+   </header>
+
+  <main> 
+
+  
+    <br/>
+    <br/>
+    <div>
+      <div class="row">
+        <div class="col-md-12">
+           <div class="titlepage", , style = "position:relative; right: px; top: 100px;">
+              <h2>My BloKnights NFT</h2>
+           </div>
+        </div>
+     </div>
+    </div>
+
+    <br/>
+
+      
+         <div id ="my-nft-list" class="row row-cols-1 row-cols-md-3 g-4", style="margin: 30px 30px 50px 10px"; >
+            <span>...</span>
+         </div>
+      
+
+
+    <br/>
+    <br/>
+    
+    
+
+      
+  </main>
+
+
+
+
+
+
+  <div class="section">
+   <div class="container">
+      <div id="" class="Testimonial">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage">
+                  <h2>Founders</h2>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-3">
+               <div class="Testimonial_box">
+                  <i><img src="images/Coworker4.png" alt=""/></i>
+               </div>
+            </div>
+            <div class="col-md-9">
+               <div class="Testimonial_box">
+                  <p1>CEO&CTO : Sueun</p1>
+                  <p>Blockchain & Back-end developer
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="section">
+   <div class="container">
+      <div id="" class="Testimonial">
+         <div class="row">
+            <div class="col-md-3">
+               <div class="Testimonial_box">
+                  <i><img src="images/Coworker5.png" alt=""/></i>
+               </div>
+            </div>
+            <div class="col-md-9">
+               <div class="Testimonial_box">
+                  <p1>CMO : Pendragon</p1>
+                  <p>
+                     Pendragon is a marketer with experience in multiple projects in the DeFi scene.
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="section">
+   <div class="container">
+      <div id="" class="Testimonial">
+         <div class="row">
+            <div class="col-md-3">
+               <div class="Testimonial_box">
+                  <i><img src="images/Coworker6.png" alt=""/></i>
+               </div>
+            </div>
+            <div class="col-md-9">
+               <div class="Testimonial_box">
+                  <p1>Developer : Cailyn</p1>
+                  <p>Back-end developer
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="section">
+   <div class="container">
+      <div id="" class="Testimonial">
+         <div class="row">
+            <div class="col-md-3">
+               <div class="Testimonial_box">
+                  <i><img src="images/Coworker7.png" alt=""/></i>
+               </div>
+            </div>
+            <div class="col-md-9">
+               <div class="Testimonial_box">
+                  <p1>Disigner : MinJu</p1>
+                  <p>Character design
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end Testimonial -->
+<!-- contact -->
+
+<!-- end contact -->
+<!--  footer -->
+<footer>
+   <div class="footer">
+      <div class="container">
+         <div class="row">
+            <div id="contact" class="contact">
+               <div class="row">
+                  <p style="text-align:center">
+                     <div class="titlepage", style = "position:relative; right: px; top: 70px;">
+                        <h2>Landing Page 2022</h2>
+                        <br/>
+                        <h1>Contact us</h1>
+                     </div>
+                  </p>
+               </div>
+            </div>
+            <div class="titlepage", style = "position:relative; right: px; top: 20px; font-size: x-large">
+               <a href='https://twitter.com/BloKnightz' target='_blank'>Twitter</a>
+               <br/>
+               <a href='https://discord.gg/ZjcutSxx' target='_blank'>Discord</a>
+            </div>
+         </div>
+      </div>
+      <div class="copyright">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <p>Copyright 2022 All Right Reserved By BloKnightz</a></p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</footer>
+  <script src="js/abi.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.0.2/bignumber.min.js' integrity="sha256-8hM/h5mrVPZGsV7j7Qmhw4mA17ztgmzcCA092JS4b7o" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/web3@1.6.1/dist/web3.min.js" integrity="sha256-XH+mnS1YTklQJ7VzeLSviplcaKwkRWpwDwHUNXVCuIU" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="js/htmlaction.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/jquery-3.0.0.min.js"></script>
+  <script src="js/plugin.js"></script>
+  <!-- sidebar -->
+  <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
