@@ -17,3 +17,5 @@
 
 개잡부 선생님 정말 감사합니다아,,ㅎㅎㅎ
 
+**npm install은 cd BloKnightz 후 npm install을 해주세용
+
