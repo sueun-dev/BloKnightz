@@ -1,19 +1,12 @@
-/*NFT.html 또는 index.HTML 파일을 실행시켜서(VSC에서 제공하는 Open live sever
-툴을 이용했습니다.) MINT YOUR NFT를 누르시면 NFT.html로 넘어가게 되어있습니다.
-그 후 Buy NFT를 누르시면 메타마스크에 있는 클레이튼이 켜집니다.
-저는 여기서 메타마스크가 아니라 카이카스가 켜지는 것을 만들려고 수많은 시도끝에
-방법을 찾아내지 못했습니다...ㅠㅠ 바로 켰을때 카이카스가 켜지고 거래가 가능하게끔 도와주시면
-정말로 많이 감사하겠습니다,,,(꾸벅) */
 function scheduler(action, ms = 1000, runRightNow = true) {
   if (runRightNow) action();
   setInterval(action, ms);
 }
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-/*config파일입니다. ERC721, butERC721의 주소가 들어가는 부분입니당
-사진 10장을 임의로 넣어두었습니다. 아래 어드레스 또한 Klaytn remix에서 구현했습니다.
-abi 파일까지 업데이트 해놨습니당.*/
+
 const config = {
   contracts: {
     ERC721: {
@@ -27,29 +20,15 @@ const config = {
       address: '0x1308c61d60568ff6ae03Bb6e8dBB8e4AD4bea5C4',
     },
   },
-  //chain의 관한 정보를 넣는 부분입니다. 편의를 의해 미리 클레이튼
-  //테스트넷 바오밥으로 설정을 해두었습니다.
-  network: {
-    chainName: 'Klaytn',
-    chainId: 1001,
-    nativeCurrency: {
-      name: 'Klaytn',
-      symbol: 'KLAY',
-      decimals: 18,
-    },
-    rpcUrls: ['https://api.baobab.klaytn.net:8651'],
-    blockExplorerUrls: ['https://baobab.scope.klaytn.com/'],
-  },
 };
+
 const App = {
-  web3Provider: null,
+  provider: null,
   currentAccount: null,
   connected: false,
 
-  //Web3가 메타마스크와 관련된 함수입니다.
-
   init: async function () {
-    await App.initWeb3();
+    await App.initCaver();
     await ERC721.init();
     await buyERC721.init();
     
@@ -58,64 +37,42 @@ const App = {
       await ERC721.pageInit();
     }
   },
-  initWeb3: async function () {
-    App.web3Provider = new Web3.providers.HttpProvider(
-      config.network.rpcUrls[0],
-    ); // 노드와의 연결
-    window.web3 = new Web3(App.web3Provider);
-
-   /*메타마스크와 관련된 코드입니다. 이 부분에서 메타마스크와 연결되었는지 확인합니다.
-    이 window.ethereum에 대해 많이 검색 한 결과 이 부분에서 자료를 찾았었지만
-    해결을 못했습니당,,,ㅠㅠ
-    https://forum.klaytn.com/t/kaikas-window/3932 */
-    if (window.ethereum) {
-      try {
-        //await App.switchNetwork();
-        await App.connect();
-        await App.chnaged();
-      } catch (error) {
-        if (error.code === 4001) {
-          // User rejected request
-          Alert('Please reflesh this page (F5)').close(3000);
-        }
-        console.log(error);
-      }
-    } else {
-      Alert('There is no Metamask. Please install Metamask.').close(5000);
+  initCaver: async function () {
+    //클레이튼 주입 여부 + 주입된 클레이튼이 Kaikas인지 확인
+    if (typeof window.klaytn !== 'undefined' && klaytn.isKaikas) {
+      // Kaikas user detected. You can now use the provider.
+      provider = window['klaytn'];
+    }else{
+      Alert('There is no Kaikas. Please install Kaikas.').close(5000);
     }
-  },
-  switchNetwork: async function () {
-    await ethereum.request({
-      method: 'wallet_addEthereumChain',
-      params: [
-        {
-          chainId: '0x' + config.network.chainId.toString(16),
-          chainName: config.network.chainName,
-          nativeCurrency: config.network.nativeCurrency,
-          rpcUrls: config.network.rpcUrls,
-          blockExplorerUrls: config.network.blockExplorerUrls,
-        },
-      ],
-    });
+
+    try {
+      await App.connect();
+      await App.chnaged();
+    } catch (error) {
+      if (error.code === 4001) {
+        // User rejected request
+        Alert('Please reflesh this page (F5)').close(3000);
+      }
+      console.log(error);
+    }
+ 
   },
   connect: async function () {
-    const accounts = await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    });
-    App.currentAccount = accounts[0];
-    App.connected = true;
+    //Kakias가 enable상태가 아니라면 enable요청.
+    if(window.klaytn.selectedAddress === undefined){
+      await window.klaytn.enable();
+    }
+    App.currentAccount = selectedAddress;
+    App.connected= true;
   },
   chnaged: async function () {
-    ethereum.on('accountsChanged', async () => {
+    window.klaytn.on('accountsChanged', async () => {
       await App.connect();
     });
   },
-  //웹에서 Account의 주소를 확인하는 함수를 만들었습니다. Mint your nft에서
-  //버튼확인이 가능합니다.
   CheckId: async function () {
-    document.getElementById("Account").innerHTML = "Your MetaMask Address : " +  await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    });
+    document.getElementById("Account").innerHTML = "Your Kaikas Address : " + window.klaytn.selectedAddress;
   },
 };
 
@@ -135,14 +92,13 @@ function Alert(msg) {
   return this;
 }
 
-
 const ERC721 = {
   contract: null,
   baseURI: '',
 
   init: async function () {
-    // do nothing
-    this.contract = new web3.eth.Contract(
+    // window에거 caver를 이미 가져왔다고 가정. 없어도 초기화 하려면 별도 import필요
+    this.contract = new window.caver.klay.Contract(
       config.contracts.ERC721.abi,
       config.contracts.ERC721.address,
     );
@@ -291,10 +247,10 @@ const ERC721 = {
 
 const buyERC721 = {
   contract: null,
-  pricePerETH: 0.002, // TMP 
+  pricePerKlay: 0.002, // TMP 
   init: async function () {
     // do nothing
-    this.contract = new web3.eth.Contract(
+    this.contract = new window.caver.klay.Contract(
       config.contracts.buyERC721.abi,
       config.contracts.buyERC721.address,
     );
@@ -305,48 +261,36 @@ const buyERC721 = {
   },
 
   mintWithETH: async function () {
-    const numberOfTokens = document.getElementById('number-of-tokens').value;
-    if (numberOfTokens > 5)
-      return Alert('only mint 5 NFT at a time').close(3000);
-    const value = new BigNumber(web3.utils.toWei(numberOfTokens, 'ether'))
-      .multipliedBy(buyERC721.pricePerETH)
-      .toFixed();
-
-    const evmData = buyERC721.contract.methods
-      .mintByETH(numberOfTokens)
-      .encodeABI();
-
-    buyERC721.sendMint(web3.utils.toHex(value), evmData);
-  },
-
-  //sendMint에도 ethereum.request가 있습니다.
-  sendMint: async function (value, evmData) {
     const isSale = await buyERC721.getIsSale();
 
     if (!isSale) {
        Alert('The sale has not started.').close(3000);
        return;
-     }
+    }
+    const numberOfTokens = document.getElementById('number-of-tokens').value;
+    if (numberOfTokens > 5)
+      return Alert('only mint 5 NFT at a time').close(3000);
 
-    const params = [
-      {
-        from: App.currentAccount,
-        to: config.contracts.buyERC721.address,
-        data: evmData,
-        value,
-      },
-    ];
-    ethereum
-      .request({
-        method: 'eth_sendTransaction',
-        params,
-      })
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const sendValue = new BigNumber(window.caver.utils.toPeb(numberOfTokens, 'KLAY'))
+      .multipliedBy(buyERC721.pricePerKlay)
+      .toFixed();
+
+    const tx = buyERC721.contract.methods.mintByETH(numberOfTokens);
+    //let estimateGas = await tx.estimateGas(); //카이카스가 사용하는 caver 1.4.1에 버그 있어서 제거
+
+    tx.send({
+      from: window.klaytn.selectedAddress,
+      //gas: estimateGas,
+      gas : 1500000,
+      value: caver.utils.toHex(sendValue)
+    })
+    .on('transactionHash', function(hash) {
+      console.log("transactionHash:" + hash)
+    })
+    .on('receipt', function(receipt) {
+      console.log("receipt:" + receipt)
+    })
+    .on('error', console.error);
   },
 };
 
